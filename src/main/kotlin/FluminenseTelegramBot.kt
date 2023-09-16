@@ -43,6 +43,16 @@ fun main() {
                 bot.sendMessage(chatId = ChatId.fromId(message.chat.id), text = "Vitória Fluminense! 🇮🇹🇮🇹")
                 bot.sendPhoto(chatId = ChatId.fromId(message.chat.id), photo = TelegramFile.ByUrl("https://i.pinimg.com/originals/08/7f/1f/087f1f5b45e57cfc9793693976d07aeb.jpg"))
             }
+
+            command("louco") {
+                bot.sendMessage(chatId = ChatId.fromId(message.chat.id), text = "Fluminense vai jogar")
+                bot.sendMessage(chatId = ChatId.fromId(message.chat.id), text = "Eu vou ficar")
+                bot.sendMessage(chatId = ChatId.fromId(message.chat.id), text = "Louco da cabeça")
+                bot.sendMessage(chatId = ChatId.fromId(message.chat.id), text = "Nada me interessa")
+                bot.sendMessage(chatId = ChatId.fromId(message.chat.id), text = "Sou tricolor, sou tricolor")
+                bot.sendMessage(chatId = ChatId.fromId(message.chat.id), text = "Laialaia, laialaia, laialaia")
+
+            }
         }
     }
 
