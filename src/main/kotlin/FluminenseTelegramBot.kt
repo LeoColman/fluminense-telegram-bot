@@ -51,7 +51,15 @@ fun main() {
                 bot.sendMessage(chatId = ChatId.fromId(message.chat.id), text = "Nada me interessa")
                 bot.sendMessage(chatId = ChatId.fromId(message.chat.id), text = "Sou tricolor, sou tricolor")
                 bot.sendMessage(chatId = ChatId.fromId(message.chat.id), text = "Laialaia, laialaia, laialaia")
+            }
 
+            command("libertadores") {
+                bot.sendMessage(chatId = ChatId.fromId(message.chat.id), text = "Vamooooos tricores! Chegou a hora vamos ganhar a libertadores")
+                bot.sendMessage(chatId = ChatId.fromId(message.chat.id), text = "Torcida, que se levante!")
+                bot.sendMessage(chatId = ChatId.fromId(message.chat.id), text = "Se viemos até aqui foi pra apoiar")
+                bot.sendMessage(chatId = ChatId.fromId(message.chat.id), text = "Tem jogo, do gigante")
+                bot.sendMessage(chatId = ChatId.fromId(message.chat.id), text = "Isso aqui é arquibancada não é sofáaaaaa")
+                bot.sendMessage(chatId = ChatId.fromId(message.chat.id), text = "Vaaaaaaaaamoss tricolores! Chegou a hora vamos ganhar a libertadores")
             }
         }
     }
