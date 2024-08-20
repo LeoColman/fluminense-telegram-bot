@@ -61,6 +61,14 @@ fun main() {
                 bot.sendMessage(chatId = ChatId.fromId(message.chat.id), text = "Isso aqui é arquibancada não é sofáaaaaa")
                 bot.sendMessage(chatId = ChatId.fromId(message.chat.id), text = "Vaaaaaaaaamoss tricolores! Chegou a hora vamos ganhar a libertadores")
             }
+
+            command("bencao") {
+                bot.sendMessage(chatId = ChatId.fromId(message.chat.id), text = "A bênção, João de Deus")
+                bot.sendMessage(chatId = ChatId.fromId(message.chat.id), text = "Nosso povo te abraça")
+                bot.sendMessage(chatId = ChatId.fromId(message.chat.id), text = "Tu vens em missão de paz")
+                bot.sendMessage(chatId = ChatId.fromId(message.chat.id), text = "Sê bem-vindo")
+                bot.sendMessage(chatId = ChatId.fromId(message.chat.id), text = "E abençoa este povo que te ama!")
+            }
         }
     }
 
