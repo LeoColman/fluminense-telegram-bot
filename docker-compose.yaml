@@ -1,0 +1,6 @@
+services:
+  fluminense-bot:
+    image: leocolman/fluminense-telegram-bot:1.4.0
+    environment:
+      - TELEGRAM_TOKEN
+    restart: unless-stopped
