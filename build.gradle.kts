@@ -1,3 +1,5 @@
+import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -5,6 +7,7 @@ plugins {
     kotlin("jvm") version "1.6.21"
     id("com.github.johnrengelman.shadow") version "7.1.2"
     application
+    id("com.bmuschko.docker-remote-api") version "9.3.0"
 }
 
 group = "br.com.colman"
@@ -34,4 +37,21 @@ tasks.withType<ShadowJar> {
 
 application {
     mainClass.set("br.com.colman.bot.FluminenseTelegramBotKt")
+}
+
+tasks.register<DockerBuildImage>("buildDockerImage") {
+    inputDir.set(file("."))
+    images.add("leocolman/fluminense-telegram-bot:${version}")
+    images.add("leocolman/fluminense-telegram-bot:latest")
+}
+
+tasks.register<DockerPushImage>("pushDockerImage") {
+    dependsOn("buildDockerImage")
+    images.add("leocolman/fluminense-telegram-bot:${version}")
+    images.add("leocolman/fluminense-telegram-bot:latest")
+
+    registryCredentials {
+        username.set(System.getenv("DOCKER_USERNAME"))
+        password.set(System.getenv("DOCKER_PASSWORD"))
+    }
 }
