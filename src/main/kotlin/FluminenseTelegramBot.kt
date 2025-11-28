@@ -28,6 +28,7 @@ fun main() {
             command("louco") { handleLouco() }
             command("libertadores") { handleLibertadores() }
             command("bencao") { handleBencao() }
+            command("xerem") { handleXerem() }
         }
     }
 
@@ -88,6 +89,14 @@ fun CommandHandlerEnvironment.handleBencao() {
         "Tu vens em missão de paz",
         "Sê bem-vindo",
         "E abençoa este povo que te ama!"
+    )
+    lines.forEach { sendMessage(it) }
+}
+
+fun CommandHandlerEnvironment.handleXerem() {
+    val lines = listOf(
+        "Uh vem que tem",
+        "É os mlk de Xerém"
     )
     lines.forEach { sendMessage(it) }
 }
