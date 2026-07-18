@@ -11,7 +11,7 @@ plugins {
 }
 
 group = "br.com.colman"
-version = "1.4.0"
+version = "1.6.0"
 
 repositories {
     mavenCentral()
@@ -20,6 +20,10 @@ repositories {
 
 dependencies {
     implementation("io.github.kotlin-telegram-bot.kotlin-telegram-bot:telegram:6.0.7")
+    implementation("com.squareup.okhttp3:okhttp:4.9.3")
+    implementation("com.google.code.gson:gson:2.9.0")
+
+    testImplementation("org.junit.jupiter:junit-jupiter:5.9.1")
 }
 
 tasks.test {

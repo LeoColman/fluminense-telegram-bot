@@ -6,6 +6,8 @@ import com.github.kotlintelegrambot.dispatcher.command
 import com.github.kotlintelegrambot.dispatcher.handlers.CommandHandlerEnvironment
 import com.github.kotlintelegrambot.entities.ChatId
 import com.github.kotlintelegrambot.entities.TelegramFile
+import java.time.ZoneId
+import java.time.ZonedDateTime
 
 
 val torcidaOptions = listOf(
@@ -29,6 +31,7 @@ fun main() {
             command("libertadores") { handleLibertadores() }
             command("bencao") { handleBencao() }
             command("xerem") { handleXerem() }
+            command("quando") { handleQuando() }
         }
     }
 
@@ -99,4 +102,23 @@ fun CommandHandlerEnvironment.handleXerem() {
         "É os mlk de Xerém"
     )
     lines.forEach { sendMessage(it) }
+}
+
+fun CommandHandlerEnvironment.handleQuando() {
+    // Key opcional do TheSportsDB; "123" é a chave pública gratuita.
+    val apiKey = System.getenv("THESPORTSDB_KEY")?.takeIf { it.isNotBlank() } ?: "123"
+
+    val now = ZonedDateTime.now(ZoneId.of("America/Sao_Paulo"))
+    val match = try {
+        nextMatch(apiKey)
+    } catch (e: Exception) {
+        sendMessage("Não consegui buscar o próximo jogo agora 😕")
+        return
+    }
+
+    if (match == null) {
+        sendMessage("Sem jogos agendados no momento 😴")
+    } else {
+        sendMessage(formatQuando(match, now))
+    }
 }

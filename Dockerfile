@@ -12,5 +12,8 @@ COPY src ./src
 # Install dependencies and build the project
 RUN ./gradlew installShadowDist
 
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+  CMD pgrep -f "fluminense-telegram-bot" || exit 1
+
 # Set the entry point
 CMD ["./build/install/fluminense-telegram-bot-shadow/bin/fluminense-telegram-bot"]
