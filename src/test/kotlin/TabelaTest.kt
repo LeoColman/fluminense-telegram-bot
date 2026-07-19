@@ -1,19 +1,18 @@
 package br.com.colman.bot
 
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
-import org.junit.jupiter.api.Test
+import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.string.shouldContain
 
-class TabelaTest {
+class TabelaTest : FunSpec({
 
-    private val rows = listOf(
+    val rows = listOf(
         TableRow(rank = 1, team = "Palmeiras", played = 18, goalDiff = 17, points = 41),
         TableRow(rank = 2, team = "Flamengo", played = 17, goalDiff = 14, points = 38),
         TableRow(rank = 3, team = "Fluminense", played = 18, goalDiff = -2, points = 30),
     )
 
-    @Test
-    fun `cabecalho e linhas formatadas com saldo`() {
+    test("cabecalho e linhas formatadas com saldo") {
         val out = formatTabela(rows)
         val esperado = """
             📊 Brasileirão
@@ -22,18 +21,16 @@ class TabelaTest {
              2 Flamengo — 38 pts (17j, +14)
              3 Fluminense — 30 pts (18j, -2) 🇮🇹
         """.trimIndent()
-        assertEquals(esperado, out)
+        out shouldBe esperado
     }
 
-    @Test
-    fun `destaca apenas o Fluminense`() {
+    test("destaca apenas o Fluminense") {
         val out = formatTabela(rows)
-        assertEquals(1, out.split("🇮🇹").size - 1)
-        assertTrue(out.contains("Fluminense — 30 pts (18j, -2) 🇮🇹"))
+        (out.split("🇮🇹").size - 1) shouldBe 1
+        out shouldContain "Fluminense — 30 pts (18j, -2) 🇮🇹"
     }
 
-    @Test
-    fun `tabela vazia devolve aviso`() {
-        assertEquals("Tabela indisponível no momento 😕", formatTabela(emptyList()))
+    test("tabela vazia devolve aviso") {
+        formatTabela(emptyList()) shouldBe "Tabela indisponível no momento 😕"
     }
-}
+})

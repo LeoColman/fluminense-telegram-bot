@@ -4,14 +4,14 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.6.21"
+    kotlin("jvm") version "1.9.23"
     id("com.github.johnrengelman.shadow") version "7.1.2"
     application
     id("com.bmuschko.docker-remote-api") version "9.3.0"
 }
 
 group = "br.com.colman"
-version = "1.8.0"
+version = "1.9.0"
 
 repositories {
     mavenCentral()
@@ -23,7 +23,8 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
     implementation("com.google.code.gson:gson:2.9.0")
 
-    testImplementation("org.junit.jupiter:junit-jupiter:5.9.1")
+    testImplementation("io.kotest:kotest-runner-junit5:5.9.1")
+    testImplementation("io.kotest:kotest-assertions-core:5.9.1")
 }
 
 tasks.test {

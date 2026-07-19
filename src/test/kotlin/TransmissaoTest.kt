@@ -1,13 +1,13 @@
 package br.com.colman.bot
 
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Test
+import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.shouldBe
 import java.time.LocalDate
 
-class TransmissaoTest {
+class TransmissaoTest : FunSpec({
 
     // Fixture no formato do JSON embutido da agenda do ge (só os campos que usamos).
-    private fun evento(home: String, away: String, date: String, media: List<String>): String {
+    fun evento(home: String, away: String, date: String, media: List<String>): String {
         val gameVideos = media.joinToString(",") { "{\"mediaType\":\"$it\",\"video\":{\"id\":1}}" }
         return """
             "firstContestant":{"popularName":"$home"},
@@ -17,43 +17,36 @@ class TransmissaoTest {
         """.trimIndent()
     }
 
-    @Test
-    fun `extrai emissoras do jogo do Flu na data`() {
+    test("extrai emissoras do jogo do Flu na data") {
         val html = evento("Fluminense", "Bragantino", "2026-07-17", listOf("premiere", "sportv"))
-        assertEquals(listOf("Premiere", "SporTV"), parseFluBroadcast(html, LocalDate.parse("2026-07-17")))
+        parseFluBroadcast(html, LocalDate.parse("2026-07-17")) shouldBe listOf("Premiere", "SporTV")
     }
 
-    @Test
-    fun `acha o Flu jogando fora`() {
+    test("acha o Flu jogando fora") {
         val html = evento("Grêmio", "Fluminense", "2026-07-26", listOf("premiere"))
-        assertEquals(listOf("Premiere"), parseFluBroadcast(html, LocalDate.parse("2026-07-26")))
+        parseFluBroadcast(html, LocalDate.parse("2026-07-26")) shouldBe listOf("Premiere")
     }
 
-    @Test
-    fun `ignora jogo em outra data`() {
+    test("ignora jogo em outra data") {
         val html = evento("Fluminense", "Bragantino", "2026-07-17", listOf("premiere"))
-        assertEquals(emptyList<String>(), parseFluBroadcast(html, LocalDate.parse("2026-07-26")))
+        parseFluBroadcast(html, LocalDate.parse("2026-07-26")) shouldBe emptyList<String>()
     }
 
-    @Test
-    fun `ignora jogo sem o Flu`() {
+    test("ignora jogo sem o Flu") {
         val html = evento("Palmeiras", "Corinthians", "2026-07-17", listOf("globo"))
-        assertEquals(emptyList<String>(), parseFluBroadcast(html, LocalDate.parse("2026-07-17")))
+        parseFluBroadcast(html, LocalDate.parse("2026-07-17")) shouldBe emptyList<String>()
     }
 
-    @Test
-    fun `mediaType desconhecido vira capitalizado`() {
+    test("mediaType desconhecido vira capitalizado") {
         val html = evento("Fluminense", "Vasco", "2026-07-17", listOf("novocanal"))
-        assertEquals(listOf("Novocanal"), parseFluBroadcast(html, LocalDate.parse("2026-07-17")))
+        parseFluBroadcast(html, LocalDate.parse("2026-07-17")) shouldBe listOf("Novocanal")
     }
 
-    @Test
-    fun `linha com canais junta com virgula`() {
-        assertEquals("📺 Premiere, SporTV", formatBroadcastLine(listOf("Premiere", "SporTV")))
+    test("linha com canais junta com virgula") {
+        formatBroadcastLine(listOf("Premiere", "SporTV")) shouldBe "📺 Premiere, SporTV"
     }
 
-    @Test
-    fun `linha vazia avisa que nao foi anunciado`() {
-        assertEquals("📺 canal ainda não anunciado", formatBroadcastLine(emptyList()))
+    test("linha vazia avisa que nao foi anunciado") {
+        formatBroadcastLine(emptyList()) shouldBe "📺 canal ainda não anunciado"
     }
-}
+})

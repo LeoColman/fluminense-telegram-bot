@@ -1,43 +1,35 @@
 package br.com.colman.bot
 
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Test
+import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.shouldBe
 
-class ElencoTest {
+class ElencoTest : FunSpec({
 
-    @Test
-    fun `parseia listagem em slug, numero e nome`() {
+    test("parseia listagem em slug, numero e nome") {
         val html = """
             <a href="/jogador/fabio"> <div class="player-name text-center">1 - FÁBIO</div> </a>
             <a href="/jogador/ph-ganso"> <div class="player-name text-center">10 - PH GANSO</div> </a>
         """.trimIndent()
-        assertEquals(
-            listOf(
-                RawPlayer("fabio", "FÁBIO", 1),
-                RawPlayer("ph-ganso", "PH GANSO", 10),
-            ),
-            parseSquadListing(html),
+        parseSquadListing(html) shouldBe listOf(
+            RawPlayer("fabio", "FÁBIO", 1),
+            RawPlayer("ph-ganso", "PH GANSO", 10),
         )
     }
 
-    @Test
-    fun `jogador sem numero fica com nome inteiro e numero nulo`() {
+    test("jogador sem numero fica com nome inteiro e numero nulo") {
         val html = """<a href="/jogador/x"> <div class="player-name text-center">Fulano de Tal</div> </a>"""
-        assertEquals(listOf(RawPlayer("x", "Fulano de Tal", null)), parseSquadListing(html))
+        parseSquadListing(html) shouldBe listOf(RawPlayer("x", "Fulano de Tal", null))
     }
 
-    @Test
-    fun `extrai posicao da pagina do jogador`() {
-        assertEquals("Volante", parsePosition("""<div class="player-position"> Volante </div>"""))
+    test("extrai posicao da pagina do jogador") {
+        parsePosition("""<div class="player-position"> Volante </div>""") shouldBe "Volante"
     }
 
-    @Test
-    fun `posicao ausente vira interrogacao`() {
-        assertEquals("?", parsePosition("<div>sem posicao aqui</div>"))
+    test("posicao ausente vira interrogacao") {
+        parsePosition("<div>sem posicao aqui</div>") shouldBe "?"
     }
 
-    @Test
-    fun `ordena por numero e formata com posicao`() {
+    test("ordena por numero e formata com posicao") {
         val players = listOf(
             Player("David Terans", "Meia", 80),
             Player("Agustín Canobbio", "Atacante", 17),
@@ -50,11 +42,10 @@ class ElencoTest {
             #25 Alisson (Atacante)
             #80 David Terans (Meia)
         """.trimIndent()
-        assertEquals(esperado, formatElenco(players))
+        formatElenco(players) shouldBe esperado
     }
 
-    @Test
-    fun `jogador sem numero vai pro fim e posicao interrogacao some`() {
+    test("jogador sem numero vai pro fim e posicao interrogacao some") {
         val players = listOf(
             Player("Sem Numero", "?", null),
             Player("Camisa Dez", "Meia", 10),
@@ -65,11 +56,10 @@ class ElencoTest {
             #10 Camisa Dez (Meia)
             Sem Numero
         """.trimIndent()
-        assertEquals(esperado, formatElenco(players))
+        formatElenco(players) shouldBe esperado
     }
 
-    @Test
-    fun `elenco vazio devolve aviso`() {
-        assertEquals("Elenco indisponível no momento 😕", formatElenco(emptyList()))
+    test("elenco vazio devolve aviso") {
+        formatElenco(emptyList()) shouldBe "Elenco indisponível no momento 😕"
     }
-}
+})
