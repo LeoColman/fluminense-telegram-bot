@@ -34,6 +34,7 @@ fun main() {
             command("quando") { handleQuando() }
             command("resultado") { handleResultado() }
             command("tabela") { handleTabela() }
+            command("elenco") { handleElenco() }
         }
     }
 
@@ -160,4 +161,15 @@ fun CommandHandlerEnvironment.handleTabela() {
     }
 
     sendMessage(formatTabela(rows))
+}
+
+fun CommandHandlerEnvironment.handleElenco() {
+    val players = try {
+        squad()
+    } catch (e: Exception) {
+        sendMessage("Não consegui buscar o elenco agora 😕")
+        return
+    }
+
+    sendMessage(formatElenco(players))
 }
