@@ -13,9 +13,6 @@ private const val AGENDA_URL = "https://ge.globo.com/agenda/"
 // TTL de 30min: canal muda pouco no dia; evita raspar o ge a cada /quando.
 private const val TRANSMISSAO_CACHE_TTL_MS = 30 * 60 * 1000L
 
-// A agenda vem como SPA; forçamos um User-Agent de browser pra receber o HTML com o JSON embutido.
-private const val BROWSER_UA = "Mozilla/5.0"
-
 // mediaType do JSON do ge -> nome amigável. Não mapeados viram capitalizados.
 private val canalPtBr = mapOf(
     "premiere" to "Premiere",

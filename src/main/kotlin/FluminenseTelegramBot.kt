@@ -164,12 +164,16 @@ fun CommandHandlerEnvironment.handleTabela() {
 }
 
 fun CommandHandlerEnvironment.handleElenco() {
-    val players = try {
-        squad()
+    val escalacao = try {
+        probableStartingEleven()
     } catch (e: Exception) {
-        sendMessage("Não consegui buscar o elenco agora 😕")
+        sendMessage("Não consegui montar o time titular agora 😕")
         return
     }
 
-    sendMessage(formatElenco(players))
+    if (escalacao == null) {
+        sendMessage("Escalação do último jogo indisponível no momento 😕")
+    } else {
+        sendMessage(formatEscalacao(escalacao))
+    }
 }

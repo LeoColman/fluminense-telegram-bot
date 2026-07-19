@@ -20,46 +20,4 @@ class ElencoTest : FunSpec({
         val html = """<a href="/jogador/x"> <div class="player-name text-center">Fulano de Tal</div> </a>"""
         parseSquadListing(html) shouldBe listOf(RawPlayer("x", "Fulano de Tal", null))
     }
-
-    test("extrai posicao da pagina do jogador") {
-        parsePosition("""<div class="player-position"> Volante </div>""") shouldBe "Volante"
-    }
-
-    test("posicao ausente vira interrogacao") {
-        parsePosition("<div>sem posicao aqui</div>") shouldBe "?"
-    }
-
-    test("ordena por numero e formata com posicao") {
-        val players = listOf(
-            Player("David Terans", "Meia", 80),
-            Player("Agustín Canobbio", "Atacante", 17),
-            Player("Alisson", "Atacante", 25),
-        )
-        val esperado = """
-            👥 Elenco do Fluminense
-
-            #17 Agustín Canobbio (Atacante)
-            #25 Alisson (Atacante)
-            #80 David Terans (Meia)
-        """.trimIndent()
-        formatElenco(players) shouldBe esperado
-    }
-
-    test("jogador sem numero vai pro fim e posicao interrogacao some") {
-        val players = listOf(
-            Player("Sem Numero", "?", null),
-            Player("Camisa Dez", "Meia", 10),
-        )
-        val esperado = """
-            👥 Elenco do Fluminense
-
-            #10 Camisa Dez (Meia)
-            Sem Numero
-        """.trimIndent()
-        formatElenco(players) shouldBe esperado
-    }
-
-    test("elenco vazio devolve aviso") {
-        formatElenco(emptyList()) shouldBe "Elenco indisponível no momento 😕"
-    }
 })

@@ -2,6 +2,8 @@ package br.com.colman.bot
 
 import com.google.gson.Gson
 import okhttp3.OkHttpClient
+import okhttp3.Request
+import java.io.IOException
 import java.time.ZoneId
 
 // Helpers compartilhados pelos comandos que consomem o TheSportsDB (/resultado, /tabela).
@@ -20,3 +22,14 @@ private val ligaPt = mapOf(
 )
 
 internal fun prettyLiga(name: String?): String = name?.let { ligaPt[it] ?: it } ?: "Jogo"
+
+// Sites como o ge/fluminense.com.br só respondem HTML completo com User-Agent de browser.
+internal const val BROWSER_UA = "Mozilla/5.0"
+
+internal fun fetchHtml(url: String): String {
+    val request = Request.Builder().url(url).header("User-Agent", BROWSER_UA).build()
+    sportsDbHttp.newCall(request).execute().use { response ->
+        if (!response.isSuccessful) throw IOException("HTTP ${response.code} em $url")
+        return response.body?.string() ?: ""
+    }
+}
