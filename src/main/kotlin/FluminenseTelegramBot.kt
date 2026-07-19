@@ -32,6 +32,9 @@ fun main() {
             command("bencao") { handleBencao() }
             command("xerem") { handleXerem() }
             command("quando") { handleQuando() }
+            command("resultado") { handleResultado() }
+            command("tabela") { handleTabela() }
+            command("elenco") { handleElenco() }
         }
     }
 
@@ -121,4 +124,46 @@ fun CommandHandlerEnvironment.handleQuando() {
     } else {
         sendMessage(formatQuando(match, now))
     }
+}
+
+// Key opcional do TheSportsDB; "123" é a chave pública gratuita.
+private fun sportsDbKey() = System.getenv("THESPORTSDB_KEY")?.takeIf { it.isNotBlank() } ?: "123"
+
+fun CommandHandlerEnvironment.handleResultado() {
+    val now = ZonedDateTime.now(ZoneId.of("America/Sao_Paulo"))
+    val result = try {
+        lastResult(sportsDbKey())
+    } catch (e: Exception) {
+        sendMessage("Não consegui buscar o último resultado agora 😕")
+        return
+    }
+
+    if (result == null) {
+        sendMessage("Sem resultados recentes no momento 😴")
+    } else {
+        sendMessage(formatResultado(result, now))
+    }
+}
+
+fun CommandHandlerEnvironment.handleTabela() {
+    val season = ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")).year.toString()
+    val rows = try {
+        leagueTable(sportsDbKey(), season)
+    } catch (e: Exception) {
+        sendMessage("Não consegui buscar a tabela agora 😕")
+        return
+    }
+
+    sendMessage(formatTabela(rows))
+}
+
+fun CommandHandlerEnvironment.handleElenco() {
+    val players = try {
+        squad(sportsDbKey())
+    } catch (e: Exception) {
+        sendMessage("Não consegui buscar o elenco agora 😕")
+        return
+    }
+
+    sendMessage(formatElenco(players))
 }

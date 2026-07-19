@@ -1,6 +1,6 @@
 services:
   fluminense-bot:
-    image: leocolman/fluminense-telegram-bot:1.6.0
+    image: leocolman/fluminense-telegram-bot:1.7.0
     environment:
       - TELEGRAM_TOKEN
       - THESPORTSDB_KEY
