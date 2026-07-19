@@ -4,7 +4,7 @@ import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import java.time.ZoneId
 
-// Helpers compartilhados pelos comandos que consomem o TheSportsDB (/resultado, /tabela, /elenco).
+// Helpers compartilhados pelos comandos que consomem o TheSportsDB (/resultado, /tabela).
 // O /quando (Quando.kt) mantém suas próprias cópias privadas por ser anterior a este arquivo.
 
 // TheSportsDB league id do Brasileirão Série A. Confirmado via lookuptable.php?l=4351.
