@@ -121,7 +121,13 @@ fun CommandHandlerEnvironment.handleQuando() {
     if (match == null) {
         sendMessage("Sem jogos agendados no momento 😴")
     } else {
-        sendMessage(formatQuando(match, now))
+        // Canal é best-effort: se o ge falhar, ainda mandamos o jogo.
+        val channels = try {
+            broadcastFor(match)
+        } catch (e: Exception) {
+            emptyList()
+        }
+        sendMessage("${formatQuando(match, now)}\n${formatBroadcastLine(channels)}")
     }
 }
 
